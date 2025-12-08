@@ -13,6 +13,15 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\02 - Application\Employee.Application\Employee.Application.csproj" />
+    <ProjectReference Include="..\..\04 - Infra\4.1 - Data\Employee.Data\Employee.Data.csproj" />
+    <ProjectReference Include="..\..\04 - Infra\4.2 - Common\Employee.Common\Employee.Common.csproj" />
+    <ProjectReference Include="..\..\04 - Infra\4.3 - CrossCutting.IoC\Employee.CrossCutting.IoC\Employee.CrossCutting.IoC.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\Employee\UpdateEmployee\" />
+    <Folder Include="Controllers\Employee\ListEmployees\" />
+    <Folder Include="Controllers\Employee\DeleteEmployee\" />
   </ItemGroup>
 
 </Project>
