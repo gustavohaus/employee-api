@@ -1,4 +1,5 @@
 using Employee.Application;
+using Employee.Application.Auth.AuthenticateUser;
 using Employee.Application.Employee.CreateEmployee;
 using Employee.Common.Logging;
 using Employee.Common.Security;
@@ -33,6 +34,7 @@ builder.RegisterDependencies();
 
 // Fluent:
 builder.Services.AddScoped<IValidator<CreateEmployeeCommand>, CreateEmployeeValidator>();
+builder.Services.AddScoped<IValidator<AuthenticateUserCommand>, AuthenticateUserCommandValidator>();
 
 // AutoMapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -43,6 +45,7 @@ builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBeh
 
 // Explicitly register the Mediatr files. (fix this)
 builder.Services.AddTransient<IRequestHandler<CreateEmployeeCommand, CreateEmployeeResult>, CreateEmployeeHandler>();
+builder.Services.AddTransient<IRequestHandler<AuthenticateUserCommand, AuthenticateUserResult>, AuthenticateUserHandler>();
 
 
 var app = builder.Build();
@@ -60,6 +63,8 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.MapControllers().RequireAuthorization();
+
 
 
 app.MapControllers();

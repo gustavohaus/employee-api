@@ -8,6 +8,6 @@ namespace Employee.Common.Validation
 {
     public interface IJwtTokenGenerator
     {
-        string GenerateToken(IUser user);
+        string GenerateToken(Guid Id, string email, string role);
     }
 }

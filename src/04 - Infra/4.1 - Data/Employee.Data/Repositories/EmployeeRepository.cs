@@ -35,11 +35,11 @@ namespace Employee.Data.Repositories
                 .Include(s => s.Phones)
                 .FirstOrDefaultAsync(s => s.Email == email || s.DocumentNumber == cpf, cancellationToken);
         }
-        public async Task<Employee.Domain.Entities.Employee?> GetEmployeeByManagerId(Guid managerId, CancellationToken cancellationToken = default)
+        public async Task<Employee.Domain.Entities.Employee?> GetEmployeeByEmail(string email , CancellationToken cancellationToken = default)
         {
             return await _context.Employees
                 .Include(s => s.Phones)
-                .FirstOrDefaultAsync(s => s.Id == managerId, cancellationToken);
+                .FirstOrDefaultAsync(s => s.Email == email, cancellationToken);
         }
 
     }
