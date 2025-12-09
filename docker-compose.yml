@@ -2,7 +2,10 @@ version: "3.9"
 
 services:
   sqlserver:
-    image: mcr.microsoft.com/mssql/server:2022-latest
+    build:
+      context: ./sql
+      dockerfile: Dockerfile
+    image: employee-sql-custom
     container_name: employee-sql
     environment:
       SA_PASSWORD: "Senha@123"
@@ -11,6 +14,7 @@ services:
       - "1433:1433"
     volumes:
       - sqlserver_data:/var/opt/mssql
+    restart: always
 
   api:
     build:
