@@ -11,16 +11,38 @@ public class Employee
     public string Password { get; set; } = string.Empty;
     public EmployeeRole Role { get;     set; }
     public EmployeeStatus Status { get; set; }
+    public DateTime BirthDate { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
     public Guid? ManagerId { get; set; }
     public Employee? Manager { get; set; }
     public ICollection<Employee> Employees { get; set; } = new List<Employee>();
-    public ICollection<Phone> Phones { get; set; } = new List<Phone>();
+    public IReadOnlyCollection<Phone> Phones => _phones.AsReadOnly();
+
+    private readonly List<Phone> _phones = new();
 
     protected Employee()
     {
         
+    }
+
+    public Employee(string firtName, string lastName, string email, string documentNumber, string password, DateTime birthDate ,EmployeeRole role)
+    {
+        FirstName = firtName;
+        LastName = lastName;
+        Email = email;
+        DocumentNumber = documentNumber;
+        Password = password;
+        BirthDate = birthDate;
+        Role = role;
+
+        this.Activate();
+    }
+
+    public void AddPhones(Phone phone)
+    {
+        _phones.Add(phone);
+        UpdatedAt = DateTime.UtcNow;
     }
 
     public void Activate()

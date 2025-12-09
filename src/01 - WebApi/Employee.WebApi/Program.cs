@@ -6,7 +6,10 @@ using Employee.Common.Validation;
 using Employee.CrossCutting.IoC;
 using Employee.Data;
 using Employee.WebApi.Middleware;
+using FluentValidation;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 
 
@@ -20,18 +23,26 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
+builder.Services.AddDbContext<DefaultContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddDbContext<DefaultContext>();
 
 builder.Services.AddJwtAuthentication(builder.Configuration);
 
 builder.RegisterDependencies();
 
-//builder.Services.AddAutoMapper(typeof(Program).Assembly, typeof(ApplicationLayer).Assembly);
+// Fluent:
+builder.Services.AddScoped<IValidator<CreateEmployeeCommand>, CreateEmployeeValidator>();
 
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateEmployeeHandler).Assembly));
+// AutoMapper
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+// MediatR
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+
+// Explicitly register the Mediatr files. (fix this)
+builder.Services.AddTransient<IRequestHandler<CreateEmployeeCommand, CreateEmployeeResult>, CreateEmployeeHandler>();
 
 
 var app = builder.Build();

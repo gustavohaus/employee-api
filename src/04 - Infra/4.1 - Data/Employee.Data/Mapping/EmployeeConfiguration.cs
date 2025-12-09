@@ -44,6 +44,8 @@ namespace Employee.Data.Mapping
                 .IsRequired()
                 .HasConversion<int>();
 
+            builder.Property(e => e.BirthDate);
+            
             builder.Property(e => e.UpdatedAt)
                 .IsRequired(false);
 
