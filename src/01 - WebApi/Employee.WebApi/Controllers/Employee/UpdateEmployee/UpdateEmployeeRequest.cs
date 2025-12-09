@@ -1,14 +1,8 @@
-﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Employee.Application.Employee.CreateEmployee
+namespace Employee.WebApi.Controllers.Employee.UpdateEmployee
 {
-    public class CreateEmployeeCommand : IRequest<CreateEmployeeResult>
+    public class UpdateEmployeeRequest
     {
+        public Guid Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
@@ -18,11 +12,11 @@ namespace Employee.Application.Employee.CreateEmployee
         public EmployeeRole Role { get; set; }
         public EmployeeStatus Status { get; set; }
         public Guid? ManagerId { get; set; }
-        public Guid AuthenticateUser { get; set; }
-        public List<CreateEmployeePhoneCommand> Phones { get; set; } = new List<CreateEmployeePhoneCommand>();
+        public List<UpdateEmployeePhoneRequest> Phones { get; set; } = new List<UpdateEmployeePhoneRequest>();
     }
-    public class CreateEmployeePhoneCommand
+    public class UpdateEmployeePhoneRequest
     {
+        public Guid? Id { get; set; }
         public string Number { get; set; }
         public PhoneType Type { get; set; }
         public bool IsPrimary { get; set; }

@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using Employee.Application.Employee.CreateEmployee;
+using Employee.Application.Employee.UpdateEmployee;
+using Employee.WebApi.Controllers.Employee.UpdateEmployee;
 
 namespace Employee.WebApi.Controllers.Employee.CreateEmployee
 {
@@ -11,6 +13,11 @@ namespace Employee.WebApi.Controllers.Employee.CreateEmployee
                 .ForMember(dest => dest.Phones, opt => opt.MapFrom(src => src.Phones));
 
             CreateMap<CreateEmployeePhoneRequest, CreateEmployeePhoneCommand>();
+
+
+            CreateMap<CreateEmployeeResult,        CreateEmployeeResponse>();
+            CreateMap<CreateEmployeePhoneResult,   CreateEmployeePhoneResponse>();
+            CreateMap<CreateEmployeeManagerResult, CreateEmployeeManagerResponse>();
         }
     }
 }

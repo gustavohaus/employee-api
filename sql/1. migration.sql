@@ -25,6 +25,7 @@ CREATE TABLE Employees
     Password NVARCHAR(255) NOT NULL,
     Role INT NOT NULL,
     Status INT NOT NULL,
+	BirthDate DATETIME2 NOT NULL,
     CreatedAt DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
     UpdatedAt DATETIME2 NULL,
     ManagerId UNIQUEIDENTIFIER NULL
@@ -56,4 +57,4 @@ REFERENCES Employees(Id)
 ON DELETE CASCADE;
 GO
 
-INSERT INTO Employees ( Id, FirstName, LastName, Email, DocumentNumber, Password, Role, Status, CreatedAt, UpdatedAt, ManagerId ) VALUES ( '11111111-1111-1111-1111-111111111111', 'Admin', 'Master', 'admin@employee.com', '00000000000',  'Admin@123', 4, 1, GETUTCDATE(), NULL, NULL );
+INSERT INTO Employees ( Id, FirstName, LastName, Email, DocumentNumber, Password, Role, Status, CreatedAt, UpdatedAt, ManagerId ) VALUES ( '8F6F50C6-436A-4BCD-F598-08DE36D28449', 'Admin', 'Master', 'admin@employee.com', '12345678910',  '$2a$11$SwMfrtsvDa0bWGqh1zru4uMUfBtdfsdXgt4TtQ/NBjrZaRrpJiQ0q', 4, 1, GETUTCDATE(), NULL, NULL );

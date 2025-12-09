@@ -5,6 +5,7 @@ using Employee.Domain.Repositories;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using EmployeeEntity = Employee.Domain.Entities.Employee;
 
 namespace Employee.Application.Employee.CreateEmployee
@@ -28,6 +29,9 @@ namespace Employee.Application.Employee.CreateEmployee
         }
         public async Task<CreateEmployeeResult> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
         {
+            _logger.LogInformation("Starting employee creation. Requested by AuthenticateUser={AuthenticateUser}, Email={Email}, Document={Document}, Role={Role}",
+                request.AuthenticateUser, request.Email, request.DocumentNumber, request.Role);
+
             var validationResult = await _validator.ValidateAsync(request, cancellationToken);
             if (!validationResult.IsValid)
             {
@@ -35,17 +39,38 @@ namespace Employee.Application.Employee.CreateEmployee
                 throw new ValidationException(validationResult.Errors);
             }
 
-            var existingUser = _employeeRepository.GetEmployeeByEmailOrCpf(request.Email, request.DocumentNumber); // email or document has exists.
+            var existingUser = await _employeeRepository.GetEmployeeByEmailOrCpf(request.Email, request.DocumentNumber);
 
-            if(request.ManagerId != null)
+            if (existingUser != null)
+                throw new ValidationException("User already exists with this email or document.");
+
+
+            var authenticated = await _employeeRepository.GetByIdAsync(request.AuthenticateUser);
+
+            var manager = await _employeeRepository.GetByIdAsync(request.ManagerId);
+
+
+            if (authenticated == null)
+                throw new ValidationException("Authenticated user not found.");
+
+
+            if (request.ManagerId == null)
             {
-                var manager = await _employeeRepository.GetByIdAsync(request.ManagerId.Value);
-
-                if(manager == null || (int)request.Role > (int)manager.Role)
+                if (authenticated.Role != EmployeeRole.Admin)
                 {
-                    _logger.LogWarning("manager {managerId} does not create a user with higher permissions than the current one.", request.ManagerId.Value);
-                    throw new ValidationException(new[] { new FluentValidation.Results.ValidationFailure(nameof(request.ManagerId.Value), $"manager does not create a user with higher permissions than the current one.") });
+                    _logger.LogWarning("User {UserId} tried to create ROOT employee without Admin permission.", authenticated.Id);
+                    throw new ValidationException("Only Admin can create an employee without a manager.");
+                }
+            }
+            else
+            {
+                if (manager == null)
+                    throw new ValidationException("Manager not found.");
 
+                if (authenticated.Id != manager.Id && (int)request.Role > (int)authenticated.Role)
+                {
+                    _logger.LogWarning("manager {managerId} does not create a user with higher permissions than the current one.", request.ManagerId.Value); 
+                    throw new ValidationException($"manager {request.ManagerId.Value} does not create a user with higher permissions than the current one.");
                 }
             }
 
@@ -59,10 +84,12 @@ namespace Employee.Application.Employee.CreateEmployee
                 employeeEntity.AddPhones(new Phone(employeeEntity, phone.Number, phone.Type, phone.IsPrimary));
             }
 
-             var employee = await _employeeRepository.CreateAsync(employeeEntity, cancellationToken);
+            var employee = await _employeeRepository.CreateAsync(employeeEntity, cancellationToken);
+
+            _logger.LogInformation("Employee {Email} created successfully.", request.Email);
 
 
-            return new CreateEmployeeResult();
+            return _mapper.Map<CreateEmployeeResult>(employee);
         }
     }
 }

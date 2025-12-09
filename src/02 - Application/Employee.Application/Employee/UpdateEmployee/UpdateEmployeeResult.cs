@@ -1,6 +1,8 @@
-﻿namespace Employee.WebApi.Controllers.Employee.CreateEmployee
+namespace Employee.Application.Employee.UpdateEmployee
 {
-    public class CreateEmployeeResponse
+
+
+    public class UpdateEmployeeResult
     {
         public Guid Id { get; set; }
         public string FirstName { get; set; } = string.Empty;
@@ -13,19 +15,18 @@
         public DateTime BirthDate { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
-        public CreateEmployeeManagerResponse? Manager { get; set; }
-        public List<CreateEmployeeManagerResponse> Employees { get; set; } = new List<CreateEmployeeManagerResponse>();
-        public List<CreateEmployeePhoneResponse> Phones { get; set; } = new List<CreateEmployeePhoneResponse>();
+        public UpdateEmployeeManagerResult? Manager { get; set; }
+        public List<UpdateEmployeePhoneResult> Phones { get; set; } = new List<UpdateEmployeePhoneResult>();
     }
 
-    public class CreateEmployeePhoneResponse
+    public class UpdateEmployeePhoneResult
     {
         public Guid Id { get; set; }
         public string Number { get; set; }
         public PhoneType Type { get; set; }
         public bool IsPrimary { get; set; }
     }
-    public class CreateEmployeeManagerResponse
+    public class UpdateEmployeeManagerResult
     {
         public Guid Id { get; set; }
         public string FirstName { get; set; } = string.Empty;

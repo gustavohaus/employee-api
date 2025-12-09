@@ -19,4 +19,11 @@ public class Phone
         Type = type;
         IsPrimary = isPrimary;
     }
+
+    public void Update(string number, PhoneType type, bool isPrimary)
+    {
+        Number = number;
+        Type = type;
+        IsPrimary = isPrimary;
+    }
 }

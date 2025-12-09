@@ -2,8 +2,7 @@ using System.Numerics;
 
 namespace Employee.Domain.Entities;
 public class Employee 
-{
-    public Guid Id { get; set; }
+{    public Guid Id { get; set; }
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
@@ -36,6 +35,7 @@ public class Employee
         BirthDate = birthDate;
         Role = role;
 
+        CreatedAt = DateTime.UtcNow;
         this.Activate();
     }
 
@@ -43,6 +43,40 @@ public class Employee
     {
         _phones.Add(phone);
         UpdatedAt = DateTime.UtcNow;
+    }
+    public void UpdatePhone(Guid phoneId, string number, PhoneType type, bool isPrimary)
+    {
+        var phone = _phones.FirstOrDefault(p => p.Id == phoneId);
+
+        if (phone == null)
+            throw new InvalidOperationException($"Phone with ID {phoneId} not found in the employee.");
+
+        phone.Update(number, type, isPrimary);
+
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void RemoveProduct(Guid phoneId)
+    {
+        var phoneToRemove = _phones.FirstOrDefault(p => p.Id == phoneId);
+
+        if (phoneToRemove == null)
+            throw new InvalidOperationException($"Phone with ID {phoneId} not found in the employee.");
+
+        _phones.Remove(phoneToRemove);
+
+
+    }
+    public void Update(string firtName, string lastName, string email, string documentNumber, DateTime birthDate, EmployeeRole role)
+    {
+        FirstName = firtName;
+        LastName = lastName;
+        Email = email;
+        DocumentNumber = documentNumber;
+        BirthDate = birthDate;
+        Role = role;
+
+        this.Activate();
     }
 
     public void Activate()

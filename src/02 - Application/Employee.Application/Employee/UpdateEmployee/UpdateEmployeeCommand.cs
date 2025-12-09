@@ -1,14 +1,11 @@
-﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Employee.Application.Employee.CreateEmployee;
+using MediatR;
 
-namespace Employee.Application.Employee.CreateEmployee
+namespace Employee.Application.Employee.UpdateEmployee
 {
-    public class CreateEmployeeCommand : IRequest<CreateEmployeeResult>
+    public class UpdateEmployeeCommand : IRequest<UpdateEmployeeResult>
     {
+        public Guid Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
@@ -17,12 +14,11 @@ namespace Employee.Application.Employee.CreateEmployee
         public DateTime BirthDate { get; set; }
         public EmployeeRole Role { get; set; }
         public EmployeeStatus Status { get; set; }
-        public Guid? ManagerId { get; set; }
-        public Guid AuthenticateUser { get; set; }
-        public List<CreateEmployeePhoneCommand> Phones { get; set; } = new List<CreateEmployeePhoneCommand>();
+        public List<UpdateEmployeePhoneCommand> Phones { get; set; } = new List<UpdateEmployeePhoneCommand>();
     }
-    public class CreateEmployeePhoneCommand
+    public class UpdateEmployeePhoneCommand
     {
+        public Guid? Id { get; set; }
         public string Number { get; set; }
         public PhoneType Type { get; set; }
         public bool IsPrimary { get; set; }

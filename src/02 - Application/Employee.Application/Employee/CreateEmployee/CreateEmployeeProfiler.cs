@@ -1,12 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AutoMapper;
+using Employee.Application.Employee.GetEmployee;
+using Employee.Domain.Entities;
+using EmployeeEntity = Employee.Domain.Entities.Employee;
 
 namespace Employee.Application.Employee.CreateEmployee
 {
-    internal class CreateEmployeeProfiler
+    public class CreateEmployeeProfiler : Profile
     {
+        public CreateEmployeeProfiler()
+        {
+            CreateMap<EmployeeEntity, CreateEmployeeResult>();
+            CreateMap<Phone, GetEmployeePhoneResult>();
+            CreateMap<EmployeeEntity, CreateEmployeeResult>();
+        }
     }
 }
