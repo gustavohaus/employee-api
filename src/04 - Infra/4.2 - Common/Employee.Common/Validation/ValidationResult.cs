@@ -1,7 +1,9 @@
 ﻿using FluentValidation.Results;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Employee.Common.Validation
 {
+    [ExcludeFromCodeCoverage]
     public class ValidationResultDetail
     {
         public bool IsValid { get; set; }

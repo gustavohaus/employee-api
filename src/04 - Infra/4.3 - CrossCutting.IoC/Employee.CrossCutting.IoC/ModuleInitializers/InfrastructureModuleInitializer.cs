@@ -4,10 +4,12 @@ using Employee.Domain.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics.CodeAnalysis;
 
 
 namespace Employee.CrossCutting.IoC.ModuleInitializers
 {
+    [ExcludeFromCodeCoverage]
     public class InfrastructureModuleInitializer : IModuleInitializer
     {
         public void Initialize(WebApplicationBuilder builder)

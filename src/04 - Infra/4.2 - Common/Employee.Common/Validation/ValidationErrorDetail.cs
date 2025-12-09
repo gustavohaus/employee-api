@@ -1,7 +1,9 @@
 ﻿using FluentValidation.Results;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Employee.Common.Validation
 {
+    [ExcludeFromCodeCoverage]
     public class ValidationErrorDetail
     {
         public string Error { get; init; } = string.Empty;

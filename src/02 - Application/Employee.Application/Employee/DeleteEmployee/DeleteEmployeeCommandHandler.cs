@@ -5,12 +5,12 @@ using Microsoft.Extensions.Logging;
 
 namespace Employee.Application.Employee.DeleteEmployee
 {
-    public class DeleteEmployeeCommandHandler : IRequestHandler<DeleteEmployeeCommand, bool>
+    public class DeleteEmployeeHandler : IRequestHandler<DeleteEmployeeCommand, bool>
     {
         private readonly IEmployeeRepository _employeeRepository;
-        private readonly ILogger<DeleteEmployeeCommandHandler> _logger;
+        private readonly ILogger<DeleteEmployeeHandler> _logger;
 
-        public DeleteEmployeeCommandHandler(IEmployeeRepository employeeRepository, ILogger<DeleteEmployeeCommandHandler> logger)
+        public DeleteEmployeeHandler(IEmployeeRepository employeeRepository, ILogger<DeleteEmployeeHandler> logger)
         {
             _employeeRepository = employeeRepository;
             _logger = logger;
@@ -23,9 +23,7 @@ namespace Employee.Application.Employee.DeleteEmployee
             if (employee == null)
             {
                 _logger.LogWarning("Employee - {employeeId} not found.", request.EmployeeId);
-                throw new ValidationException(new[] { 
-                    new FluentValidation.Results.ValidationFailure(nameof(request.EmployeeId), 
-                    $"Employee with ID {request.EmployeeId} not found.") });
+                throw new ValidationException($"Employee - {request.EmployeeId} not found.");
             }
 
             await _employeeRepository.DeleteAsync(employee, cancellationToken);

@@ -1,6 +1,9 @@
 ﻿
+using System.Diagnostics.CodeAnalysis;
+
 namespace Employee.Common.Validation
 {
+    [ExcludeFromCodeCoverage]
     public class PasswordHasher : IPasswordHasher
     {
         /// <summary>

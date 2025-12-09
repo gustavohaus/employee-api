@@ -25,15 +25,18 @@ public class Employee
         
     }
 
-    public Employee(string firtName, string lastName, string email, string documentNumber, string password, DateTime birthDate ,EmployeeRole role)
+    public Employee(string firstName, string lastName, string email, string documentNumber, string password,
+        DateTime birthDate ,EmployeeRole role, Employee? manager = null)
     {
-        FirstName = firtName;
+        FirstName = firstName;
         LastName = lastName;
         Email = email;
         DocumentNumber = documentNumber;
         Password = password;
         BirthDate = birthDate;
         Role = role;
+
+        Manager = manager;
 
         CreatedAt = DateTime.UtcNow;
         this.Activate();
@@ -56,7 +59,7 @@ public class Employee
         UpdatedAt = DateTime.UtcNow;
     }
 
-    public void RemoveProduct(Guid phoneId)
+    public void RemovePhone(Guid phoneId)
     {
         var phoneToRemove = _phones.FirstOrDefault(p => p.Id == phoneId);
 

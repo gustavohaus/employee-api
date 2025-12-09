@@ -2,6 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -13,6 +14,8 @@ namespace Employee.Common.Validation
     /// <summary>
     /// Implementation of JWT (JSON Web Token) generator.
     /// </summary>
+    /// 
+    [ExcludeFromCodeCoverage]
     public class JwtTokenGenerator : IJwtTokenGenerator
     {
         private readonly IConfiguration _configuration;

@@ -52,7 +52,7 @@ builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBeh
 // Explicitly register the Mediatr files. (fix this)
 builder.Services.AddTransient<IRequestHandler<CreateEmployeeCommand, CreateEmployeeResult>, CreateEmployeeHandler>();
 builder.Services.AddTransient<IRequestHandler<AuthenticateUserCommand, AuthenticateUserResult>, AuthenticateUserHandler>();
-builder.Services.AddTransient<IRequestHandler<DeleteEmployeeCommand, bool>, DeleteEmployeeCommandHandler>();
+builder.Services.AddTransient<IRequestHandler<DeleteEmployeeCommand, bool>, DeleteEmployeeHandler>();
 builder.Services.AddTransient<IRequestHandler<GetEmployeeCommand, GetEmployeeResult>, GetEmployeeHandler>();
 builder.Services.AddTransient<IRequestHandler<ListEmployeesCommand, ListEmployeesResult>, ListEmployeesHandler>();
 builder.Services.AddTransient<IRequestHandler<UpdateEmployeeCommand, UpdateEmployeeResult>, UpdateEmployeeHandler>();

@@ -52,7 +52,8 @@ namespace Employee.Application.Employee.UpdateEmployee
 
             var addPhones = request.Phones.Where(x => x.Id == null);
             var updatePhones = request.Phones.Where(x => x.Id != null);
-            var removePhones = employee.Phones.Where(x => !request.Phones.Any(p => p.Id == x.Id));
+            var removePhones = employee.Phones.Where(x =>
+            !request.Phones.Any(p => p.Id == x.Id)).Select(x => x.Id).ToList();
 
             foreach (var phone in addPhones)
             {
@@ -64,12 +65,12 @@ namespace Employee.Application.Employee.UpdateEmployee
                 employee.UpdatePhone(phone.Id.Value , phone.Number, phone.Type, phone.IsPrimary);
             }
 
-
             foreach (var phone in removePhones)
             {
-                employee.RemoveProduct(phone.Id);
+                employee.RemovePhone(phone);
             }
 
+            employee = await _employeeRepository.UpdateAsync(employee, cancellationToken);
 
             _logger.LogInformation("Employee - {EmployeeId} updated successfully.", request.Id);
 

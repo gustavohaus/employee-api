@@ -10,9 +10,11 @@ using Serilog.Exceptions.EntityFrameworkCore.Destructurers;
 using Serilog.Sinks.SystemConsole.Themes;
 using Serilog.Templates;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Employee.Common.Logging
 {
+    [ExcludeFromCodeCoverage]
     public static class LoggingExtension
     {
         /// <summary>
