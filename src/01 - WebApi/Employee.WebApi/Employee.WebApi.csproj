@@ -21,10 +21,4 @@
     <ProjectReference Include="..\..\04 - Infra\4.3 - CrossCutting.IoC\Employee.CrossCutting.IoC\Employee.CrossCutting.IoC.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\Employee\UpdateEmployee\" />
-    <Folder Include="Controllers\Employee\ListEmployees\" />
-    <Folder Include="Controllers\Employee\DeleteEmployee\" />
-  </ItemGroup>
-
 </Project>

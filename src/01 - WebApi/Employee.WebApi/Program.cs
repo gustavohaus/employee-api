@@ -1,6 +1,10 @@
 using Employee.Application;
 using Employee.Application.Auth.AuthenticateUser;
 using Employee.Application.Employee.CreateEmployee;
+using Employee.Application.Employee.DeleteEmployee;
+using Employee.Application.Employee.GetEmployee;
+using Employee.Application.Employee.ListEmployees;
+using Employee.Application.Employee.UpdateEmployee;
 using Employee.Common.Logging;
 using Employee.Common.Security;
 using Employee.Common.Validation;
@@ -35,6 +39,8 @@ builder.RegisterDependencies();
 // Fluent:
 builder.Services.AddScoped<IValidator<CreateEmployeeCommand>, CreateEmployeeValidator>();
 builder.Services.AddScoped<IValidator<AuthenticateUserCommand>, AuthenticateUserCommandValidator>();
+builder.Services.AddScoped<IValidator<UpdateEmployeeCommand>, UpdateEmployeeCommandValidator>();
+builder.Services.AddScoped<IValidator<DeleteEmployeeCommand>, DeleteEmployeeCommandValidator>();
 
 // AutoMapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -46,6 +52,10 @@ builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBeh
 // Explicitly register the Mediatr files. (fix this)
 builder.Services.AddTransient<IRequestHandler<CreateEmployeeCommand, CreateEmployeeResult>, CreateEmployeeHandler>();
 builder.Services.AddTransient<IRequestHandler<AuthenticateUserCommand, AuthenticateUserResult>, AuthenticateUserHandler>();
+builder.Services.AddTransient<IRequestHandler<DeleteEmployeeCommand, bool>, DeleteEmployeeCommandHandler>();
+builder.Services.AddTransient<IRequestHandler<GetEmployeeCommand, GetEmployeeResult>, GetEmployeeHandler>();
+builder.Services.AddTransient<IRequestHandler<ListEmployeesCommand, ListEmployeesResult>, ListEmployeesHandler>();
+builder.Services.AddTransient<IRequestHandler<UpdateEmployeeCommand, UpdateEmployeeResult>, UpdateEmployeeHandler>();
 
 
 var app = builder.Build();
