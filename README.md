@@ -5,7 +5,8 @@ A **Employee API** é uma aplicação desenvolvida em `.NET 9` para gerenciar op
 
 ---
 
-# Employee API --- Inicialização com Docker
+# Employee API 
+Inicialização com Docker
 
 Este projeto utiliza **Docker + Docker Compose** para rodar:
 
@@ -230,10 +231,205 @@ O payload de saída será retornado no formato JSON e conterá os seguintes camp
 
 ---
 
-## Endpoint: Criar Funcionário
 
-### Descrição
-Este endpoint é responsável por criar um novo funcionário na base de dados. Ele aceita informações detalhadas sobre o funcionário, como nome, e-mail, documentos, telefones e informações do gerente.
 
+## Deletar Funcionário
+
+### URL
+`DELETE /api/Employee`
+
+### Campos
+```bash
+{
+  "employeeId": "f9920a52-1c07-4cf1-747a-08de37aea76c"
+}
+```
+
+### Retorno
+- **200 OK:** Funcionario criado com sucesso.
+- **400 Bad Request:** Dados inválidos ou campos obrigatórios ausentes.
+- **500 Internal Server Error:** Erro interno no servidor.
 
 ---
+
+## Buscar Funcionário por ID (GetById)
+
+### URL
+`GET /api/Employee/{id}`
+
+### Curl
+```bash
+curl --location '{{BASE_URL}}/api/Employee/6f2dff9d-51b0-433f-d6ec-08de37ef9cd1' \
+--header 'accept: text/plain' \
+--header 'Authorization: {{TOKEN}}'
+```
+
+### Retorno
+Retorna dados completos do funcionário
+
+
+### Retorno
+
+
+```json
+{
+  "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "firstName": "Funcionario",
+  "lastName": "Atualizado",
+  "email": "usuario@exemplo.com",
+  "documentNumber": "***********",
+  "password": "string",
+  "role": 1,
+  "status": 0,
+  "birthDate": "YYYY-MM-DDTHH:MM:SS.ZZZZ",
+  "createdAt": "YYYY-MM-DDTHH:MM:SS.ZZZZ",
+  "updatedAt": "YYYY-MM-DDTHH:MM:SS.ZZZZ",
+  "manager": {
+    "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+    "firstName": "Lider",
+    "lastName": "Base",
+    "email": "lider@exemplo.com",
+    "role": 2
+  },
+  "phones": [
+    {
+      "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+      "number": "***********",
+      "type": 1,
+      "isPrimary": true
+    },
+    {
+      "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+      "number": "***********",
+      "type": 1,
+      "isPrimary": false
+    }
+  ]
+}
+
+```
+
+---
+
+## Atualizar Funcionário (Update)
+
+### URL
+`PUT /api/Employee`
+
+### Entrada
+```json
+{
+   "id":"xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+   "firstName":"Funcionario",
+   "lastName":"Atualizado",
+   "email":"usuario@exemplo.com",
+   "documentNumber":"***********",
+   "birthDate":"YYYY-MM-DDTHH:MM:SS.ZZZZ",
+   "role":1,
+   "status":0,
+   "managerId":"xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+   "phones":[
+      {
+         "id":"xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+         "number":"***********",
+         "type":1,
+         "isPrimary":true
+      },
+      {
+         "number":"***********",
+         "type":1,
+         "isPrimary":true
+      }
+   ]
+}
+```
+
+### Retorno
+```json
+{
+  "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "firstName": "Funcionario",
+  "lastName": "Atualizado",
+  "email": "usuario@exemplo.com",
+  "documentNumber": "***********",
+  "password": "string",
+  "role": 1,
+  "status": 0,
+  "birthDate": "YYYY-MM-DDTHH:MM:SS.ZZZZ",
+  "createdAt": "YYYY-MM-DDTHH:MM:SS.ZZZZ",
+  "updatedAt": "YYYY-MM-DDTHH:MM:SS.ZZZZ",
+  "manager": {
+    "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+    "firstName": "Lider",
+    "lastName": "Base",
+    "email": "lider@exemplo.com",
+    "role": 2
+  },
+  "phones": [
+    {
+      "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+      "number": "***********",
+      "type": 1,
+      "isPrimary": true
+    },
+    {
+      "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+      "number": "***********",
+      "type": 1,
+      "isPrimary": false
+    }
+  ]
+}
+
+```
+
+---
+
+## Listagem de Funcionários
+
+### URL
+`GET /api/Employee`
+
+### Parâmetros
+- StartDate
+- EndDate
+- ManagerId
+- Role
+- PageNumber
+- PageSize
+
+
+
+### Retorno
+```json
+{
+  "currentPage": 1,
+  "totalPages": 1,
+  "totalCount": 1,
+  "data": [
+    {
+      "id": "guid",
+      "firstName": "string",
+      "lastName": "string",
+      "email": "string",
+      "documentNumber": "string",
+      "manager": null,
+      "role": 3,
+      "status": 0,
+      "birthDate": "2000-12-10T05:17:40.413",
+      "createdAt": "2025-12-10T05:43:45.889",
+      "updatedAt": "2025-12-10T05:43:45.890"
+    }
+  ],
+  "success": true,
+  "message": "",
+  "errors": []
+}
+```
+
+---
+
+## Observações
+- Todos os endpoints (exceto autenticação) exigem **Authorization Bearer Token**.
+- Enums devem respeitar os valores configurados no back-end.
+
