@@ -158,7 +158,7 @@ O payload de entrada deve ser enviado no formato JSON e conter os seguintes camp
   "documentNumber": "string", // Obrigatório
   "password": "string", // Obrigatório
   "birthDate": "2025-12-10T04:36:21.538Z", // Obrigatório
-  "role": 1, // Obrigatório (enum): 0 = Admin | 1 = Employee
+  "role": 1, // Obrigatório (enum): Employee = 1, Leader = 2, Director = 3, Admin = 4
   "status": 0, // Obrigatório (enum): 0 = Active | 1 = Inactive
   "managerId": "3fa85f64-5717-4562-b3fc-2c963f66afa6", // Opcional (Guid)
   "phones": [ // Opcional (array)
