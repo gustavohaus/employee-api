@@ -1,7 +1,9 @@
 ﻿using Employee.Common.Validation;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Employee.WebApi.Commom
 {
+    [ExcludeFromCodeCoverage]
     public class ApiResponse
     {
         public bool Success { get; set; }

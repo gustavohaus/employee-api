@@ -1,11 +1,12 @@
 ﻿using Employee.Common.Validation;
 using Employee.WebApi.Commom;
 using FluentValidation;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 
 namespace Employee.WebApi.Middleware
 {
-
+    [ExcludeFromCodeCoverage]
     public class ValidationExceptionMiddleware
     {
         private readonly RequestDelegate _next;

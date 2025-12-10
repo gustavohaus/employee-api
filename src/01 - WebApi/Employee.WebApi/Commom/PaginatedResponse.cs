@@ -1,5 +1,8 @@
-﻿namespace Employee.WebApi.Commom
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Employee.WebApi.Commom
 {
+    [ExcludeFromCodeCoverage]
     public class PaginatedResponse<T> : ApiResponseWithData<IEnumerable<T>>
     {
         public int CurrentPage { get; set; }
