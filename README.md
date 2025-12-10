@@ -187,7 +187,7 @@ O payload de saída será retornado no formato JSON e conterá os seguintes camp
   "email": "string", // string — E-mail do funcionário
   "documentNumber": "string", // string — Documento do funcionário
   "birthDate": "2025-12-10T04:36:21.538Z", // DateTime — Data de nascimento 
-  "role": 1, // enum — Cargo: 0 = Admin | 1 = Employee
+  "role": 1, // enum — Cargo: Employee = 1, Leader = 2, Director = 3, Admin = 4
   "status": 0, // enum — Status: 0 = Active | 1 = Inactive
   "createdAt": "2025-12-10T05:00:00.000Z", // DateTime — Data de criação do registro
   "updatedAt": null, // DateTime? — Data da última atualização (opcional)
