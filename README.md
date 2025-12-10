@@ -5,7 +5,8 @@ A **Employee API** é uma aplicação desenvolvida em `.NET 9` para gerenciar op
 
 ---
 
-# Employee API --- Inicialização com Docker
+# Employee API 
+Inicialização com Docker
 
 Este projeto utiliza **Docker + Docker Compose** para rodar:
 
