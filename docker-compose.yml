@@ -1,0 +1,33 @@
+version: "3.9"
+
+services:
+  sqlserver:
+    build:
+      context: ./sql
+      dockerfile: Dockerfile
+    image: employee-sql-custom
+    container_name: employee-sql
+    environment:
+      SA_PASSWORD: "Senha@123"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    restart: always
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: employee-api
+    ports:
+      - "8080:8080"
+    depends_on:
+      - sqlserver
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__DefaultConnection: "Server=sqlserver,1433;Database=EmployeeDb;User Id=sa;Password=Senha@123;TrustServerCertificate=True;Encrypt=False"
+
+volumes:
+  sqlserver_data:
