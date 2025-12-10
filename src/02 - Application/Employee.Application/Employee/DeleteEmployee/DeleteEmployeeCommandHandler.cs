@@ -23,13 +23,22 @@ namespace Employee.Application.Employee.DeleteEmployee
             if (employee == null)
             {
                 _logger.LogWarning("Employee - {employeeId} not found.", request.EmployeeId);
-                throw new ValidationException($"Employee - {request.EmployeeId} not found.");
+                throw new ValidationException(new[] {
+                    new FluentValidation.Results.ValidationFailure(nameof(request.EmployeeId),
+                    $"Employee - {request.EmployeeId} not found.") });
+            }
+
+            if (employee.Employees.Any())
+            {
+                _logger.LogWarning("Employee - {employeeId} cannot be deleted due to active relationships.", request.EmployeeId);
+                throw new ValidationException(new[] {
+                    new FluentValidation.Results.ValidationFailure(nameof(request.EmployeeId),
+                    $"Employee - {request.EmployeeId} cannot be deleted due to active relationships.") });
             }
 
             await _employeeRepository.DeleteAsync(employee, cancellationToken);
 
             _logger.LogInformation("Employee {EmployeeId} was successfully deleted.", request.EmployeeId);
-
 
             return true;
         }

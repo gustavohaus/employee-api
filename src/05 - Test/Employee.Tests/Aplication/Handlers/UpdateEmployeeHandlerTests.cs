@@ -177,7 +177,6 @@ namespace Employee.Tests.Application.Handlers
                 LastName = _faker.Name.LastName(),
                 Email = _faker.Internet.Email(),
                 DocumentNumber = _faker.Random.Replace("###########"),
-                Password = _faker.Internet.Password(),
                 BirthDate = _faker.Date.Past(30, DateTime.Now.AddYears(-18)),
                 Role = EmployeeRole.Employee,
                 Phones = new List<UpdateEmployeePhoneCommand>
@@ -206,7 +205,6 @@ namespace Employee.Tests.Application.Handlers
                 LastName = _faker.Name.LastName(),
                 Email = _faker.Internet.Email(),
                 DocumentNumber = _faker.Random.Replace("###########"),
-                Password = _faker.Internet.Password(),
                 BirthDate = _faker.Date.Past(30, DateTime.Now.AddYears(-18)),
                 Role = EmployeeRole.Employee,
                 Phones = new List<UpdateEmployeePhoneCommand>
@@ -230,7 +228,6 @@ namespace Employee.Tests.Application.Handlers
                 LastName = _faker.Name.LastName(),
                 Email = _faker.Internet.Email(),
                 DocumentNumber = _faker.Random.Replace("###########"),
-                Password = _faker.Internet.Password(),
                 BirthDate = _faker.Date.Past(30, DateTime.Now.AddYears(-18)),
                 Role = EmployeeRole.Employee,
                 Phones = new List<UpdateEmployeePhoneCommand>

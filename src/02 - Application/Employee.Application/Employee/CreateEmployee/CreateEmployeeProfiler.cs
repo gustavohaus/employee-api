@@ -9,9 +9,12 @@ namespace Employee.Application.Employee.CreateEmployee
     {
         public CreateEmployeeProfiler()
         {
-            CreateMap<EmployeeEntity, CreateEmployeeResult>();
-            CreateMap<Phone, GetEmployeePhoneResult>();
-            CreateMap<EmployeeEntity, CreateEmployeeResult>();
+            CreateMap<EmployeeEntity, CreateEmployeeResult>()
+                 .ForMember(dest => dest.Phones, opt => opt.MapFrom(src => src.Phones));
+
+            CreateMap<Phone, CreateEmployeePhoneResult>();
+
+            CreateMap<EmployeeEntity, CreateEmployeeManagerResult>();
         }
     }
 }

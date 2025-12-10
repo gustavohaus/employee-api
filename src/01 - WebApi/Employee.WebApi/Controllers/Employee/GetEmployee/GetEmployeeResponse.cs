@@ -7,7 +7,6 @@ namespace Employee.WebApi.Controllers.Employee.GetEmployee
         public string LastName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string DocumentNumber { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
         public EmployeeRole Role { get; set; }
         public EmployeeStatus Status { get; set; }
         public DateTime BirthDate { get; set; }

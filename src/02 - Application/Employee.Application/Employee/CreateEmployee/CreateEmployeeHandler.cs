@@ -42,13 +42,15 @@ namespace Employee.Application.Employee.CreateEmployee
             var existingUser = await _employeeRepository.GetEmployeeByEmailOrCpf(request.Email, request.DocumentNumber);
 
             if (existingUser != null)
-                throw new ValidationException("User already exists with this email or document.");
+                 throw new ValidationException(new[] { new FluentValidation.Results.ValidationFailure(nameof(existingUser), $"User already exists with this email or document.") });
 
 
             var authenticated = await _employeeRepository.GetByIdAsync(request.AuthenticateUser);
 
+            EmployeeEntity? manager = null;
+
             if (authenticated == null)
-                throw new ValidationException("Authenticated user not found.");
+                throw new ValidationException(new[] { new FluentValidation.Results.ValidationFailure(nameof(existingUser), $"Authenticated user not found.") });
 
 
             if (request.ManagerId == null)
@@ -56,27 +58,34 @@ namespace Employee.Application.Employee.CreateEmployee
                 if (authenticated.Role != EmployeeRole.Admin)
                 {
                     _logger.LogWarning("User {UserId} tried to create employee without Admin permission.", authenticated.Id);
-                    throw new ValidationException("Only Admin can create an employee without a manager.");
+                    throw new ValidationException(new[] { new FluentValidation.Results.ValidationFailure(nameof(existingUser), $"Only Admin can create an employee without a manager.") });
                 }
             }
             else
             {
-                var manager = await _employeeRepository.GetByIdAsync(request.ManagerId.Value);
+                 manager = await _employeeRepository.GetByIdAsync(request.ManagerId.Value);
 
                 if (manager == null)
-                    throw new ValidationException("Manager not found.");
+                    throw new ValidationException(new[] { new FluentValidation.Results.ValidationFailure(nameof(manager), $"Manager not found.") });
 
-                if (authenticated.Id != manager.Id || (int)request.Role >= (int)authenticated.Role)
+
+                if (authenticated.Id != manager.Id && authenticated.Role != EmployeeRole.Admin)
                 {
                     _logger.LogWarning("manager {managerId} does not create a user with higher permissions than the current one.", request.ManagerId.Value); 
-                    throw new ValidationException($"manager {request.ManagerId.Value} does not create a user with higher permissions than the current one.");
+                    throw new ValidationException(new[] { new FluentValidation.Results.ValidationFailure(nameof(manager), $"manager {request.ManagerId.Value} cannot create a user assigned to another manager.") });
+                }
+
+                if ((int)request.Role >= (int)manager.Role)
+                {
+                    _logger.LogWarning("manager {managerId} does not create a user with higher permissions than the current one.", request.ManagerId.Value); 
+                    throw new ValidationException(new[] { new FluentValidation.Results.ValidationFailure(nameof(manager), $"manager {request.ManagerId.Value} does not create a user with higher permissions than the current one.") });
                 }
             }
 
             var hash = _passwordHasher.HashPassword(request.Password);
 
             var employeeEntity = new EmployeeEntity(request.FirstName,
-                request.LastName, request.Email, request.DocumentNumber, hash, request.BirthDate, request.Role);
+                request.LastName, request.Email, request.DocumentNumber, hash, request.BirthDate, request.Role, manager);
 
             foreach (var phone in request.Phones)
             {

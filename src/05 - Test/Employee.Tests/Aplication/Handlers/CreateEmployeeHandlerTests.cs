@@ -153,6 +153,7 @@ namespace Employee.Tests.Application.Handlers
 
             // Assert
             await act.Should().ThrowAsync<ValidationException>();
+            await _repositoryMock.DidNotReceive().CreateAsync(Arg.Any<EmployeeEntity>(), Arg.Any<CancellationToken>());
         }
 
         [Fact]
@@ -172,8 +173,8 @@ namespace Employee.Tests.Application.Handlers
             Func<Task> act = async () => await _handler.Handle(command, CancellationToken.None);
 
             // Assert
-            await act.Should().ThrowAsync<ValidationException>()
-                .WithMessage("Only Admin can create an employee without a manager.");
+            await act.Should().ThrowAsync<ValidationException>();
+            await _repositoryMock.DidNotReceive().CreateAsync(Arg.Any<EmployeeEntity>(), Arg.Any<CancellationToken>());
         }
 
         [Fact]
@@ -286,9 +287,9 @@ namespace Employee.Tests.Application.Handlers
             // Act
             Func<Task> act = async () => await _handler.Handle(command, CancellationToken.None);
 
-            // Assert
-            await act.Should().ThrowAsync<ValidationException>()
-                .WithMessage($"manager {command.ManagerId.Value} does not create a user with higher permissions than the current one.");
+            // Assert            
+            await act.Should().ThrowAsync<ValidationException>();
+            await _repositoryMock.DidNotReceive().CreateAsync(Arg.Any<EmployeeEntity>(), Arg.Any<CancellationToken>());
         }
 
         [Fact] 
@@ -313,8 +314,9 @@ namespace Employee.Tests.Application.Handlers
             Func<Task> act = async () => await _handler.Handle(command, CancellationToken.None);
 
             // Assert
-            await act.Should().ThrowAsync<ValidationException>()
-                .WithMessage($"User already exists with this email or document.");
+            await act.Should()
+                .ThrowAsync<ValidationException>()
+                .Where(ex => ex.Message.Contains("User already"));
         }
         [Fact] 
         public async Task Handle_ShouldThrowValidationException_WhenUserAuthenticatedNotExists()
@@ -337,8 +339,9 @@ namespace Employee.Tests.Application.Handlers
             Func<Task> act = async () => await _handler.Handle(command, CancellationToken.None);
 
             // Assert
-            await act.Should().ThrowAsync<ValidationException>()
-                .WithMessage($"Authenticated user not found.");
+            await act.Should()
+                .ThrowAsync<ValidationException>();
+            await _repositoryMock.DidNotReceive().CreateAsync(Arg.Any<EmployeeEntity>(), Arg.Any<CancellationToken>());
         }
 
         private CreateEmployeeCommand GenerateValidCommand()

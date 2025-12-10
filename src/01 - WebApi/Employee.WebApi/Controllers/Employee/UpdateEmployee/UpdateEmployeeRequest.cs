@@ -7,7 +7,6 @@ namespace Employee.WebApi.Controllers.Employee.UpdateEmployee
         public string LastName { get; set; }
         public string Email { get; set; }
         public string DocumentNumber { get; set; }
-        public string Password { get; set; }
         public DateTime BirthDate { get; set; }
         public EmployeeRole Role { get; set; }
         public EmployeeStatus Status { get; set; }

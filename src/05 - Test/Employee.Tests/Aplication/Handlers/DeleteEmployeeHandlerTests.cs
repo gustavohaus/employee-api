@@ -62,6 +62,42 @@ namespace Employee.Tests.Application.Handlers
         }
 
         [Fact]
+        public async Task Handle_ShouldThrowValidationException_WhenEmployeeHasActiveRelationships()
+        {
+            // Arrange
+            var employeeId = Guid.NewGuid();
+            var employee = new EmployeeEntity(
+                _faker.Name.FirstName(),
+                _faker.Name.LastName(),
+                _faker.Internet.Email(),
+                _faker.Random.Replace("###########"),
+                _faker.Internet.Password(),
+                _faker.Date.Past(30, DateTime.Now.AddYears(-18)),
+                EmployeeRole.Employee);
+
+            // Simula que o funcionário possui relacionamentos ativos
+            employee.Employees.Add(new EmployeeEntity(
+                _faker.Name.FirstName(),
+                _faker.Name.LastName(),
+                _faker.Internet.Email(),
+                _faker.Random.Replace("###########"),
+                _faker.Internet.Password(),
+                _faker.Date.Past(30, DateTime.Now.AddYears(-18)),
+                EmployeeRole.Employee));
+
+            _repositoryMock.GetByIdAsync(employeeId, Arg.Any<CancellationToken>()).Returns(employee);
+
+            var command = new DeleteEmployeeCommand { EmployeeId = employeeId };
+
+            // Act
+            Func<Task> act = async () => await _handler.Handle(command, CancellationToken.None);
+
+            // Assert
+            await act.Should().ThrowAsync<ValidationException>();
+            await _repositoryMock.DidNotReceive().DeleteAsync(Arg.Any<EmployeeEntity>(), Arg.Any<CancellationToken>());
+        }
+
+        [Fact]
         public async Task Handle_ShouldThrowValidationException_WhenEmployeeDoesNotExist()
         {
             // Arrange
@@ -74,8 +110,7 @@ namespace Employee.Tests.Application.Handlers
             Func<Task> act = async () => await _handler.Handle(command, CancellationToken.None);
 
             // Assert
-            await act.Should().ThrowAsync<ValidationException>()
-                .WithMessage($"Employee - {employeeId} not found.");
+            await act.Should().ThrowAsync<ValidationException>();
             await _repositoryMock.DidNotReceive().DeleteAsync(Arg.Any<EmployeeEntity>(), Arg.Any<CancellationToken>());
         }
 

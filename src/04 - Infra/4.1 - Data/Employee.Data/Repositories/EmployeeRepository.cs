@@ -83,6 +83,7 @@ namespace Employee.Data.Repositories
 
             var sales = await query
                 .Include(s => s.Phones)
+                .Include(s => s.Manager)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync(cancellationToken);

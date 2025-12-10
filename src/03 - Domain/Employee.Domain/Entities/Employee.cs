@@ -87,10 +87,4 @@ public class Employee
         Status = EmployeeStatus.Active;
         UpdatedAt = DateTime.UtcNow;
     }
-
-    public void Deactivate()
-    {
-        Status = EmployeeStatus.Inactive;
-        UpdatedAt = DateTime.UtcNow;
-    }
 }
